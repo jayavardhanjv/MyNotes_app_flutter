@@ -5,6 +5,8 @@ import 'package:flutter_application_2/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'dart:developer';
 
+import 'package:flutter_application_2/utitlities/showerrordialog.dart';
+
 class Login extends StatefulWidget {
   const Login({super.key});
 
@@ -76,13 +78,18 @@ class _LoginState extends State<Login> {
                               dashboardRoute, (route) => false);
                         } on FirebaseAuthException catch (e) {
                           if (e.code == "user-not-found") {
+                            await showErrorData(context, 'User Not Found.');
                             log("User not found");
                           } else if (e.code == "wrong-password") {
-                            log("Wrong password");
+                            await showErrorData(context, 'Wrong password.');
+                            log("Wrong credentials");
                           } else {
                             log("somthing else happend");
+                            await showErrorData(context, 'Error: ${e.code}');
                             log(e.code);
                           }
+                        } catch (e) {
+                          await showErrorData(context, e.toString());
                         }
                       },
                       child: const Text("press me for login")),
