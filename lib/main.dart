@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/constants/routs.dart';
 import 'package:flutter_application_2/firebase_options.dart';
 import 'package:flutter_application_2/pages/login.dart';
 import 'package:flutter_application_2/pages/register_user.dart';
@@ -18,9 +19,9 @@ void main() {
       ),
       home: const Homepage(),
       routes: {
-        '/login/': (context) => const Login(),
-        '/register/': (context) => const Register(),
-        '/dashboard/': (context) => const Dashboard(),
+        loginRoute: (context) => const Login(),
+        registerroute: (context) => const Register(),
+        dashboardRoute: (context) => const Dashboard(),
       },
     ),
   );
@@ -83,7 +84,7 @@ class _DashboardState extends State<Dashboard> {
                   if (shouldLayout) {
                     await FirebaseAuth.instance.signOut();
                     Navigator.of(context)
-                        .pushNamedAndRemoveUntil('/login/', (route) => false);
+                        .pushNamedAndRemoveUntil(loginRoute, (route) => false);
                   }
               }
             },

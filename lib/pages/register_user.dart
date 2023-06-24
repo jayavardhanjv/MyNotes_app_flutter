@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_application_2/constants/routs.dart';
 import 'package:flutter_application_2/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -76,7 +77,7 @@ class _RegisterState extends State<Register> {
           TextButton(
               onPressed: () {
                 Navigator.of(context)
-                    .pushNamedAndRemoveUntil('/login/', (route) => false);
+                    .pushNamedAndRemoveUntil(loginRoute, (route) => false);
               },
               child: const Text("If you are alrady login? click here"))
         ],

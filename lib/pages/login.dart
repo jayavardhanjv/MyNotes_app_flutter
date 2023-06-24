@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_application_2/constants/routs.dart';
 import 'package:flutter_application_2/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'dart:developer';
@@ -72,7 +73,7 @@ class _LoginState extends State<Login> {
                                   email: email, password: password);
 
                           Navigator.of(context).pushNamedAndRemoveUntil(
-                              '/dashboard/', (route) => false);
+                              dashboardRoute, (route) => false);
                         } on FirebaseAuthException catch (e) {
                           if (e.code == "user-not-found") {
                             log("User not found");
@@ -88,7 +89,7 @@ class _LoginState extends State<Login> {
                   TextButton(
                       onPressed: () {
                         Navigator.of(context).pushNamedAndRemoveUntil(
-                            '/register/', (route) => false);
+                            registerroute, (route) => false);
                       },
                       child:
                           const Text("if you are not registered click here")),
