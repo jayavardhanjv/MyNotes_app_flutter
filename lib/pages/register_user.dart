@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_application_2/constants/routs.dart';
 import 'package:flutter_application_2/firebase_options.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_application_2/services/auth/auth_exception.dart';
+import 'package:flutter_application_2/services/auth/auth_service.dart';
 import 'package:flutter_application_2/utitlities/showerrordialog.dart';
 
 class Register extends StatefulWidget {
@@ -58,29 +58,23 @@ class _RegisterState extends State<Register> {
                 final email = _email.text;
                 final password = _password.text;
                 try {
-                  final userCredentiaal = await FirebaseAuth.instance
-                      .createUserWithEmailAndPassword(
-                          email: email, password: password);
-                  final user = FirebaseAuth.instance.currentUser;
-                  await user?.sendEmailVerification();
+                  await AuthService.firebase().createUser(
+                    email: email,
+                    password: password,
+                  );
+                  AuthService.firebase().sendEmailVerisfication();
                   Navigator.of(context).pushNamed(verifyemailRoute);
-                  print(userCredentiaal);
-                } on FirebaseException catch (e) {
-                  if (e.code == "weak-password") {
-                    await showErrorData(context, "Weak Password");
-                    print("Weak Password");
-                  } else if (e.code == "email-alrady-in-use") {
-                    await showErrorData(context, "email alrady in use");
-                    print("email alrady in use");
-                  } else if (e.code == "invalid-email") {
-                    await showErrorData(context, "invalid email");
-                    print("invalid email");
-                  } else {
-                    await showErrorData(context, "Error:${e.code}");
-                    print(e.code);
-                  }
-                } catch (e) {
-                  await showErrorData(context, e.toString());
+                } on WeakPasswordAuthException {
+                  await showErrorData(context, "Weak Password");
+                  print("Weak Password");
+                } on EmailAlreadyInUseAuthException {
+                  await showErrorData(context, "email alrady in use");
+                  print("email alrady in use");
+                } on InvalidEmailAuthException {
+                  await showErrorData(context, "invalid email");
+                  print("invalid email");
+                } on GenericAuthException {
+                  await showErrorData(context, "Failed to register");
                 }
               },
               child: const Text("press me")),
