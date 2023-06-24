@@ -5,7 +5,7 @@ import 'package:flutter_application_2/pages/login.dart';
 import 'package:flutter_application_2/pages/register_user.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_application_2/pages/verify.dart';
-import 'dart:developer';
+// import 'dart:developer';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +20,7 @@ void main() {
       routes: {
         '/login/': (context) => const Login(),
         '/register/': (context) => const Register(),
+        '/dashboard/': (context) => const Dashboard(),
       },
     ),
   );
@@ -82,7 +83,7 @@ class _DashboardState extends State<Dashboard> {
                   if (shouldLayout) {
                     await FirebaseAuth.instance.signOut();
                     Navigator.of(context)
-                        .pushNamedAndRemoveUntil('/login', (route) => false);
+                        .pushNamedAndRemoveUntil('/login/', (route) => false);
                   }
               }
             },
