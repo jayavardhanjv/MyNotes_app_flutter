@@ -22,6 +22,7 @@ void main() {
         loginRoute: (context) => const Login(),
         registerroute: (context) => const Register(),
         dashboardRoute: (context) => const Dashboard(),
+        verifyemailRoute: (context) => const VerifyEmail(),
       },
     ),
   );
