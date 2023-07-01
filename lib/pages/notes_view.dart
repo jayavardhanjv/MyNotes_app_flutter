@@ -2,20 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_2/constants/routs.dart';
 import 'package:flutter_application_2/enums/menu_action.dart';
 import 'package:flutter_application_2/services/auth/auth_service.dart';
+import 'package:flutter_application_2/services/auth/crud/notes_services.dart';
 
-class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+class NotesView extends StatefulWidget {
+  const NotesView({Key? key}) : super(key: key);
 
   @override
-  State<Dashboard> createState() => _DashboardState();
+  _NotesViewState createState() => _NotesViewState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _NotesViewState extends State<NotesView> {
+  late final NotesService _notesService;
+  String get userEmail => AuthService.firebase().currentUser!.email!;
+  @override
+  void initState() {
+    _notesService = NotesService();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _notesService.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Dashboard"),
+        title: const Text("Your Notes"),
         actions: [
           PopupMenuButton<Menuaction>(
             onSelected: (value) async {
@@ -24,7 +40,7 @@ class _DashboardState extends State<Dashboard> {
                 case Menuaction.logout:
                   final shouldLayout = await showLogOutDialog(context);
                   if (shouldLayout) {
-                    AuthService.firebase().logout();
+                    await AuthService.firebase().logout();
                     Navigator.of(context)
                         .pushNamedAndRemoveUntil(loginRoute, (route) => false);
                   }
@@ -39,7 +55,27 @@ class _DashboardState extends State<Dashboard> {
           )
         ],
       ),
-      body: const Text("Hello World"),
+      body: FutureBuilder(
+        future: _notesService.getOrCreateUser(email: userEmail),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.done:
+              return StreamBuilder(
+                stream: _notesService.allNotes,
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return const Text("Waiting for all Notes........");
+                    default:
+                      return const CircularProgressIndicator();
+                  }
+                },
+              );
+            default:
+              return const CircularProgressIndicator();
+          }
+        },
+      ),
     );
   }
 }

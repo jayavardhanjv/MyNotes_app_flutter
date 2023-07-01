@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/constants/routs.dart';
-import 'package:flutter_application_2/pages/dashboard.dart';
+import 'package:flutter_application_2/pages/notes_view.dart';
 import 'package:flutter_application_2/pages/login.dart';
 import 'package:flutter_application_2/pages/register_user.dart';
 import 'package:flutter_application_2/pages/verify.dart';
@@ -20,7 +20,7 @@ void main() {
       routes: {
         loginRoute: (context) => const Login(),
         registerroute: (context) => const Register(),
-        dashboardRoute: (context) => const Dashboard(),
+        notesViewRoute: (context) => const NotesView(),
         verifyemailRoute: (context) => const VerifyEmail(),
       },
     ),
@@ -40,7 +40,7 @@ class Homepage extends StatelessWidget {
             final user = AuthService.firebase().currentUser;
             if (user != null) {
               if (user.isEmailVerified) {
-                return const Dashboard();
+                return const NotesView();
               } else {
                 return const VerifyEmail();
               }
