@@ -21,13 +21,6 @@ class _NotesViewState extends State<NotesView> {
   }
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    _notesService.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -71,7 +64,27 @@ class _NotesViewState extends State<NotesView> {
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
-                      return const Text("Waiting for all Notes........");
+                    case ConnectionState.active:
+                      if (snapshot.hasData) {
+                        final allNotes = snapshot.data as List<DatabaseNote>;
+                        print(allNotes);
+                        return ListView.builder(
+                          itemCount: allNotes.length,
+                          itemBuilder: (context, index) {
+                            final note = allNotes[index];
+                            return ListTile(
+                              title: Text(
+                                note.text,
+                                maxLines: 1,
+                                softWrap: true,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            );
+                          },
+                        );
+                      } else {
+                        return const CircularProgressIndicator();
+                      }
                     default:
                       return const CircularProgressIndicator();
                   }
@@ -89,20 +102,21 @@ class _NotesViewState extends State<NotesView> {
 Future<bool> showLogOutDialog(BuildContext context) {
   return showDialog<bool>(
     context: context,
-    builder: (BuildContext context) {
+    builder: (context) {
       return AlertDialog(
         title: const Text("signout"),
         content: const Text("Are you sure what want to  logout"),
         actions: [
           TextButton(
-              onPressed: (() {
-                Navigator.of(context).pop(false);
-              }),
-              child: const Text("Cancel")),
+            onPressed: () {
+              Navigator.of(context).pop(false);
+            },
+            child: const Text("Cancel"),
+          ),
           TextButton(
-              onPressed: (() {
+              onPressed: () {
                 Navigator.of(context).pop(true);
-              }),
+              },
               child: const Text("Log out")),
         ],
       );
