@@ -3,6 +3,7 @@ import 'package:flutter_application_2/constants/routs.dart';
 import 'package:flutter_application_2/firebase_options.dart';
 import 'package:flutter_application_2/services/auth/auth_exception.dart';
 import 'package:flutter_application_2/services/auth/auth_service.dart';
+import 'package:flutter_application_2/utitlities/dialogs/error_dialog.dart';
 import 'package:flutter_application_2/utitlities/showerrordialog.dart';
 
 class Register extends StatefulWidget {
@@ -65,16 +66,16 @@ class _RegisterState extends State<Register> {
                   AuthService.firebase().sendEmailVerisfication();
                   Navigator.of(context).pushNamed(verifyemailRoute);
                 } on WeakPasswordAuthException {
-                  await showErrorData(context, "Weak Password");
+                  await showErrorDialog(context, "Weak Password");
                   print("Weak Password");
                 } on EmailAlreadyInUseAuthException {
-                  await showErrorData(context, "email alrady in use");
+                  await showErrorDialog(context, "email alrady in use");
                   print("email alrady in use");
                 } on InvalidEmailAuthException {
-                  await showErrorData(context, "invalid email");
+                  await showErrorDialog(context, "invalid email");
                   print("invalid email");
                 } on GenericAuthException {
-                  await showErrorData(context, "Failed to register");
+                  await showErrorDialog(context, "Failed to register");
                 }
               },
               child: const Text("press me")),

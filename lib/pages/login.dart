@@ -3,6 +3,7 @@ import 'package:flutter_application_2/constants/routs.dart';
 import 'package:flutter_application_2/firebase_options.dart';
 import 'package:flutter_application_2/services/auth/auth_exception.dart';
 import 'package:flutter_application_2/services/auth/auth_service.dart';
+import 'package:flutter_application_2/utitlities/dialogs/error_dialog.dart';
 import 'dart:developer';
 
 import 'package:flutter_application_2/utitlities/showerrordialog.dart';
@@ -74,14 +75,14 @@ class _LoginState extends State<Login> {
                         verifyemailRoute, (route) => false);
                   }
                 } on UserNotFoudAuthException {
-                  await showErrorData(context, 'User Not Found.');
+                  await showErrorDialog(context, 'User Not Found.');
                   log("User not found");
                 } on WrongPasswordAuthException {
-                  await showErrorData(context, 'Wrong password.');
+                  await showErrorDialog(context, 'Wrong password.');
                   log("Wrong credentials");
                 } on GenericAuthException {
                   log("somthing else happend");
-                  await showErrorData(context, "Authentication Error");
+                  await showErrorDialog(context, "Authentication Error");
                 }
               },
               child: const Text("press me for login")),
