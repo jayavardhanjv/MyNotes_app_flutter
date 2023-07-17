@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/constants/routs.dart';
-import 'package:flutter_application_2/pages/notes/new_note_view.dart';
+import 'package:flutter_application_2/pages/notes/crete_update_note_view.dart';
 import 'package:flutter_application_2/pages/notes/notes_view.dart';
 import 'package:flutter_application_2/pages/login.dart';
 import 'package:flutter_application_2/pages/register_user.dart';
@@ -24,7 +24,7 @@ void main() {
         registerroute: (context) => const Register(),
         notesViewRoute: (context) => const NotesView(),
         verifyemailRoute: (context) => const VerifyEmail(),
-        newNoteRoute: (Context) => const NewNoteView(),
+        ceateOrUpdateNoteRoute: (Context) => const CreateUpdateNoteView(),
       },
     ),
   );
