@@ -2,13 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_2/services/cloud/cloud_note.dart';
 import 'package:flutter_application_2/services/cloud/cloud_storage_constants.dart';
 import 'package:flutter_application_2/services/cloud/cloud_storage_exceptions.dart';
-//this file is used to do curd in firestore 
+
+//this file is used to do curd in firestore
 class FirebaseCloudStorage {
   final notes = FirebaseFirestore.instance.collection('notes');
 //here we are delete=ing note of the user in firestore
   Future<void> deleteNote({required String documentId}) async {
     try {
-      notes.doc(documentId).delete()
+      notes.doc(documentId).delete();
     } catch (e) {
       throw CouldNotDeleteNoteException();
     }
@@ -40,26 +41,24 @@ class FirebaseCloudStorage {
           )
           .get()
           .then(
-            (value) => value.docs.map(
-              (doc) {
-                return CloudNote(
-                  documentId: doc.id,
-                  ownerUserId: doc.data()[ownerUserIdFieldName] as String,
-                  text: doc.data()[textFieldName] as String,
-                );
-              },
-            ),
+            (value) => value.docs.map((doc) => CloudNote.fromSnapshot(doc)),
           );
     } catch (e) {
       throw CouldNotGetAllNotesException();
     }
   }
 
-  void creteNewNote({required String ownerUserId}) async {
-    await notes.add({
+  Future<CloudNote> creteNewNote({required String ownerUserId}) async {
+    final document = await notes.add({
       ownerUserIdFieldName: ownerUserId,
       textFieldName: '',
     });
+    final fetchNote = await document.get();
+    return CloudNote(
+      documentId: fetchNote.id,
+      ownerUserId: ownerUserId,
+      text: '',
+    );
   }
 
   static final FirebaseCloudStorage _shared =
