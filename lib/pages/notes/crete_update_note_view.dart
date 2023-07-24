@@ -112,7 +112,7 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
               // ignore: unnecessary_cast
-              print(_note);
+              // print(_note);
               _setupTextControllerListener(); // TODO: Handle this case.
               return TextField(
                 controller: _textController,
