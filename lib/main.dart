@@ -5,13 +5,11 @@ import 'package:flutter_application_2/pages/notes/notes_view.dart';
 import 'package:flutter_application_2/pages/login.dart';
 import 'package:flutter_application_2/pages/register_user.dart';
 import 'package:flutter_application_2/pages/verify.dart';
-import 'package:flutter_application_2/services/auth/auth_service.dart';
 import 'package:flutter_application_2/services/auth/bloc/auth_bloc.dart';
 import 'package:flutter_application_2/services/auth/bloc/auth_event.dart';
 import 'package:flutter_application_2/services/auth/bloc/auth_state.dart';
 import 'package:flutter_application_2/services/auth/firebase_auth_provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path/path.dart';
 // import 'dart:developer';
 
 void main() {
@@ -28,10 +26,6 @@ void main() {
         child: const Homepage(),
       ),
       routes: {
-        loginRoute: (context) => const Login(),
-        registerroute: (context) => const Register(),
-        notesViewRoute: (context) => const NotesView(),
-        verifyemailRoute: (context) => const VerifyEmail(),
         ceateOrUpdateNoteRoute: (Context) => const CreateUpdateNoteView(),
       },
     ),
@@ -51,6 +45,8 @@ class Homepage extends StatelessWidget {
         return const VerifyEmail();
       } else if (state is AuthStateLoggedOut) {
         return const Login();
+      } else if (state is AuthStateRegistering) {
+        return const Register();
       } else {
         return const Scaffold(
           body: CircularProgressIndicator(),
