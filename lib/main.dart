@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/constants/routs.dart';
+import 'package:flutter_application_2/helpers/loading/loadingScreen.dart';
 import 'package:flutter_application_2/pages/notes/crete_update_note_view.dart';
 import 'package:flutter_application_2/pages/notes/notes_view.dart';
 import 'package:flutter_application_2/pages/login.dart';
@@ -38,7 +39,16 @@ class Homepage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.read<AuthBloc>().add(const AuthEventInitialize());
-    return BlocBuilder<AuthBloc, AuthState>(builder: ((context, state) {
+    return BlocConsumer<AuthBloc, AuthState>(listener: (context, state) {
+      if (state.isLoading) {
+        LoadingScreen().show(
+          context: context,
+          text: state.loadingText ?? 'oplease wait a mobeent',
+        );
+      } else {
+        LoadingScreen().hide();
+      }
+    }, builder: (context, state) {
       if (state is AuthStateLoggedIn) {
         return const NotesView();
       } else if (state is AuthStateNeedsVerification) {
@@ -52,6 +62,6 @@ class Homepage extends StatelessWidget {
           body: CircularProgressIndicator(),
         );
       }
-    }));
+    });
   }
 }
