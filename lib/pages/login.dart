@@ -20,7 +20,6 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   late final TextEditingController _email;
   late final TextEditingController _password;
-  CloseDialog? _closeDialogHandle;
   @override
   void initState() {
     // TODO: implement initState
@@ -43,16 +42,6 @@ class _LoginState extends State<Login> {
       listener: (context, state) async {
         // TODO: implement listener
         if (state is AuthStateLoggedOut) {
-          final closeDialog = _closeDialogHandle;
-
-          if (!state.isLoading && closeDialog != null) {
-            closeDialog();
-            _closeDialogHandle = null;
-          } else if (state.isLoading && closeDialog == null) {
-            _closeDialogHandle =
-                showLoadingDialog(context: context, text: 'Loading.....');
-          }
-
           if (state.exception is UserNotFoudAuthException) {
             await showErrorDialog(context, 'user not found');
           } else if (state.exception is WrongPasswordAuthException) {
@@ -96,11 +85,16 @@ class _LoginState extends State<Login> {
                 child: const Text("press me for login")),
             TextButton(
                 onPressed: () {
-                  context.read<AuthBloc>().add(
-                        const AuthEventShouldRegister(),
-                      );
+                  context.read<AuthBloc>().add(const AuthEventShouldRegister());
                 },
                 child: const Text("if you are not registered click here")),
+            TextButton(
+                onPressed: () {
+                  context.read<AuthBloc>().add(
+                        const AuthEventForgotPassword(),
+                      );
+                },
+                child: const Text("I forgot my password"))
           ],
         ),
       ),

@@ -57,42 +57,61 @@ class _RegisterState extends State<Register> {
         appBar: AppBar(
           title: const Text('Register'),
         ),
-        body: Column(
-          children: [
-            TextFormField(
-              controller: _email,
-              enableSuggestions: false,
-              autocorrect: false,
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(hintText: "enter the email"),
-            ),
-            TextFormField(
-              enableSuggestions: false,
-              autocorrect: false,
-              obscureText: true,
-              decoration: const InputDecoration(hintText: "enter the password"),
-              controller: _password,
-            ),
-            TextButton(
-                onPressed: () async {
-                  final email = _email.text;
-                  final password = _password.text;
-                  context.read<AuthBloc>().add(
-                        AuthEventRegister(
-                          email,
-                          password,
-                        ),
-                      );
-                },
-                child: const Text("press me")),
-            TextButton(
-                onPressed: () {
-                  context.read<AuthBloc>().add(
-                        const AuthEventLogout(),
-                      );
-                },
-                child: const Text("If you are alrady login? click here"))
-          ],
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextFormField(
+                controller: _email,
+                enableSuggestions: false,
+                autocorrect: false,
+                autofocus: true,
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(hintText: "enter the email"),
+              ),
+              TextFormField(
+                enableSuggestions: false,
+                autocorrect: false,
+                obscureText: true,
+                decoration:
+                    const InputDecoration(hintText: "enter the password"),
+                controller: _password,
+              ),
+              Center(
+                child: Column(
+                  children: [
+                    TextButton(
+                        onPressed: () async {
+                          final email = _email.text;
+                          final password = _password.text;
+                          context.read<AuthBloc>().add(
+                                AuthEventRegister(
+                                  email,
+                                  password,
+                                ),
+                              );
+                        },
+                        child: const Text("press me")),
+                  ],
+                ),
+              ),
+              Center(
+                child: Column(
+                  children: [
+                    TextButton(
+                        onPressed: () {
+                          context.read<AuthBloc>().add(
+                                const AuthEventLogout(),
+                              );
+                        },
+                        child:
+                            const Text("If you are alrady login? click here")),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

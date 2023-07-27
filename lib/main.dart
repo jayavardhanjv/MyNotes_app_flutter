@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/constants/routs.dart';
 import 'package:flutter_application_2/helpers/loading/loadingScreen.dart';
+import 'package:flutter_application_2/pages/forgot_password_views.dart';
 import 'package:flutter_application_2/pages/notes/crete_update_note_view.dart';
 import 'package:flutter_application_2/pages/notes/notes_view.dart';
 import 'package:flutter_application_2/pages/login.dart';
@@ -55,6 +56,8 @@ class Homepage extends StatelessWidget {
         return const VerifyEmail();
       } else if (state is AuthStateLoggedOut) {
         return const Login();
+      } else if (state is AuthStateForgotPassword) {
+        return const ForgotPasswordView();
       } else if (state is AuthStateRegistering) {
         return const Register();
       } else {
