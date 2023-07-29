@@ -12,12 +12,15 @@ import 'package:flutter_application_2/services/auth/bloc/auth_event.dart';
 import 'package:flutter_application_2/services/auth/bloc/auth_state.dart';
 import 'package:flutter_application_2/services/auth/firebase_auth_provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // import 'dart:developer';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MaterialApp(
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
       debugShowCheckedModeBanner: false,
       title: 'My Application',
       theme: ThemeData(
